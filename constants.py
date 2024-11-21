@@ -16,6 +16,7 @@ FLY_IMAGE = pygame.transform.scale(pygame.image.load(f"{IMG_FOLDER}fly.png"), (6
 BUMBLEBEE_IMAGE = pygame.transform.scale(pygame.image.load(f"{IMG_FOLDER}bumblebee.png"), (40, 40))
 WASP_IMAGE = pygame.transform.scale(pygame.image.load(f"{IMG_FOLDER}wasp.png"), (50, 50))
 MISSILE_IMAGE = pygame.transform.scale(pygame.image.load(f"{IMG_FOLDER}missile.png"), (20, 40))
+MENU_IMAGE = pygame.transform.scale(pygame.image.load(f"{IMG_FOLDER}menu.png"), (WIDTH, HEIGHT))
 
 # Player and game settings
 PLAYER_SIZE = 60
