@@ -47,7 +47,7 @@ def level_complete_message(level):
     pygame.time.delay(3000)  
 
 def game_loop(level, max_enemy_vel, max_add_increment, score):
-    global LIVES 
+    global LIVES
     player_x = WIDTH // 2
     player_y = HEIGHT - 100
     clock = pygame.time.Clock()
@@ -56,32 +56,30 @@ def game_loop(level, max_enemy_vel, max_add_increment, score):
 
     enemy_add_increment = max(400, max_add_increment)
     enemy_count = 0
-    enemies = [] 
-    projectiles = []  
-    last_shot_time = 0  
+    enemies = []
+    projectiles = []
+    last_shot_time = 0
 
-    num_enemies = min(3 + level, 5)  
-    enemy_vel_base = max_enemy_vel  
+    num_enemies = min(3 + level, 5)
+    enemy_vel_base = max_enemy_vel
 
-    while True:  
-        enemy_count += clock.tick(60) 
+    while True:
+        enemy_count += clock.tick(60)
         elapsed_time = time.time() - start_time
 
         player_points = get_triangle_points(player_x, player_y, PLAYER_SIZE)
 
-
-        if enemy_count > random.randint(300, enemy_add_increment):  
-            for _ in range(num_enemies):  
+        if enemy_count > random.randint(300, enemy_add_increment):
+            for _ in range(num_enemies):
                 enemy_x = random.randint(0, WIDTH - 80)
 
-                bumblebee_spawn_chance = min(0.3 + (0.05 * level), 0.7) 
-                wasp_spawn_chance = min(0.2 + (0.03 * level), 0.5) 
-
+                bumblebee_spawn_chance = min(0.3 + (0.05 * level), 0.7)
+                wasp_spawn_chance = min(0.2 + (0.03 * level), 0.5)
 
                 rand_val = random.random()
-                if rand_val < wasp_spawn_chance:  
+                if rand_val < wasp_spawn_chance:
                     enemy = WaspShip(enemy_x, -100, enemy_vel_base, level)
-                elif rand_val < wasp_spawn_chance + bumblebee_spawn_chance:  
+                elif rand_val < wasp_spawn_chance + bumblebee_spawn_chance:
                     enemy = BumblebeeShip(enemy_x, -100, enemy_vel_base, level)
                 else:
                     enemy = FlyShip(enemy_x, -80, enemy_vel_base, level)
@@ -92,43 +90,41 @@ def game_loop(level, max_enemy_vel, max_add_increment, score):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return "quit", enemy_vel_base, max_add_increment
-        
+                return "quit", enemy_vel_base, max_add_increment, score
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player_x - PLAYER_VEL - PLAYER_SIZE // 2 >= 0:
             player_x -= PLAYER_VEL
         if keys[pygame.K_RIGHT] and player_x + PLAYER_VEL + PLAYER_SIZE // 2 <= WIDTH:
             player_x += PLAYER_VEL
-        if keys[pygame.K_SPACE] and (pygame.time.get_ticks() - last_shot_time > FIRE_COOLDOWN): 
+        if keys[pygame.K_SPACE] and (pygame.time.get_ticks() - last_shot_time > FIRE_COOLDOWN):
             proj_rect = pygame.Rect(player_x - 10, player_y - PLAYER_SIZE, 10, 20)
             projectiles.append(proj_rect)
-            last_shot_time = pygame.time.get_ticks()  
-
+            last_shot_time = pygame.time.get_ticks()
 
         for proj in projectiles[:]:
-            proj.y -= PROJECTILE_VEL  
-            if proj.y < -PROJ_IMAGE.get_height():  
+            proj.y -= PROJECTILE_VEL
+            if proj.y < -PROJ_IMAGE.get_height():
                 projectiles.remove(proj)
 
-
         for enemy in enemies[:]:
-            enemy.move() 
+            enemy.move()
 
             if isinstance(enemy, WaspShip):
-                enemy.shoot()  
-                enemy.move_projectiles() 
+                enemy.shoot()
+                enemy.move_projectiles()
 
                 for proj in enemy.projectiles[:]:
                     if proj.colliderect(pygame.Rect(player_x - PLAYER_SIZE, player_y - PLAYER_SIZE, PLAYER_SIZE * 2, PLAYER_SIZE * 2)):
                         enemy.projectiles.remove(proj)
-                        LIVES -= 1 
+                        LIVES -= 1
                         if LIVES <= 0:
                             return "hit", enemy_vel_base, max_add_increment, score
                         return "restart", max_enemy_vel, max_add_increment, score
 
             if enemy.y > HEIGHT:
-                enemies.remove(enemy)  
-            elif triangle_collision(player_points, enemy.get_rect()):  
+                enemies.remove(enemy)
+            elif triangle_collision(player_points, enemy.get_rect()):
                 enemies.remove(enemy)
                 LIVES -= 1
                 if LIVES <= 0:
@@ -141,23 +137,24 @@ def game_loop(level, max_enemy_vel, max_add_increment, score):
                         enemy.health -= 1
                         if enemy.health <= 0:
                             enemies.remove(enemy)
-                            score += 2  
+                            score += 2
                     elif isinstance(enemy, WaspShip):
                         enemy.health -= 1
                         if enemy.health <= 0:
-                            enemies.remove(enemy) 
+                            enemies.remove(enemy)
                             score += 3
                     else:
-                        enemies.remove(enemy) 
+                        enemies.remove(enemy)
                         score += 1
 
                     projectiles.remove(proj)
                     break
 
-        if elapsed_time > 45: 
-            return "level_up", enemy_vel_base, max_add_increment
+        if elapsed_time > 20:
+            return "level_up", enemy_vel_base, max_add_increment, score
 
         draw(player_x, player_y, elapsed_time, enemies, projectiles, LIVES, level, score)
+
 
 
 
