@@ -152,12 +152,10 @@ def game_loop(level, max_enemy_vel, max_add_increment, score):
                     projectiles.remove(proj)
                     break
 
-        if elapsed_time > 10:
+        if elapsed_time > 30:
             return "level_up", enemy_vel_base, max_add_increment, score
 
         draw(player_x, player_y, elapsed_time, enemies, projectiles, LIVES, level, score)
-
-
 
 
 def main():
