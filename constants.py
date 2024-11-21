@@ -18,7 +18,7 @@ WASP_IMAGE = pygame.transform.scale(pygame.image.load(f"{IMG_FOLDER}wasp.png"), 
 MISSILE_IMAGE = pygame.transform.scale(pygame.image.load(f"{IMG_FOLDER}missile.png"), (20, 40))
 MENU_IMAGE = pygame.transform.scale(pygame.image.load(f"{IMG_FOLDER}menu.png"), (WIDTH, HEIGHT))
 
-# Player and game settings
+# Game settings
 PLAYER_SIZE = 60
 PLAYER_VEL = 6
 BASE_ENEMY_VEL = 4
@@ -31,4 +31,6 @@ FIRE_COOLDOWN = 250
 LIVES = 3
 
 # Font
-FONT = pygame.font.SysFont("comicsans", 30)
+FONT_PATH = "fonts/PressStart2P-Regular.ttf"  
+FONT = pygame.font.Font(FONT_PATH, 30)  
+

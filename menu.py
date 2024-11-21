@@ -20,7 +20,7 @@ def menu():
     run = True
     clock = pygame.time.Clock()
 
-    button_width, button_height = 400, 100
+    button_width, button_height = 500, 100
     button_gap = 40  
     total_height = (button_height * 3) + (button_gap * 2)  
     start_y = HEIGHT - total_height - 120 

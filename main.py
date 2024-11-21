@@ -9,13 +9,14 @@ def draw(player_x, player_y, elapsed_time, enemies, projectiles, lives, level, s
     WIN.blit(BG, (0, 0))
 
     lives_text = FONT.render(f'Lives: {lives}', 1, "white")
-    WIN.blit(lives_text, (200, 20))
     time_text = FONT.render(f'Time: {round(elapsed_time)}s', 1, "white")
-    WIN.blit(time_text, (20, 20))
     level_text = FONT.render(f'Level: {level}', 1, "white")
-    WIN.blit(level_text, (WIDTH - 150, 20))
-    score_text = FONT.render(f'Score: {score}', 1, "white")  
-    WIN.blit(score_text, (WIDTH / 2 - score_text.get_width() / 2, 20))  
+    score_text = FONT.render(f'Score: {score}', 1, "white")
+
+    WIN.blit(lives_text, (20, 20))  
+    WIN.blit(time_text, (20, 60)) 
+    WIN.blit(level_text, (WIDTH - 20 - level_text.get_width(), 20)) 
+    WIN.blit(score_text, (WIDTH / 2 - score_text.get_width() / 2, 20)) 
 
     WIN.blit(SHIP_IMAGE, (player_x - PLAYER_SIZE, player_y - PLAYER_SIZE))
 
@@ -26,6 +27,7 @@ def draw(player_x, player_y, elapsed_time, enemies, projectiles, lives, level, s
         enemy.draw(WIN)
 
     pygame.display.update()
+
 
 def get_triangle_points(x, y, size):
     """Return the points of an upward-facing triangle centered at (x, y)."""
@@ -172,8 +174,15 @@ def main():
             run = False
         elif result == "hit":
             if LIVES == 0:
-                lost_text = FONT.render(f"LMAOOOOOOO u are horrible at this game. Final Score: {score}", 1, "white")  
-                WIN.blit(lost_text, (WIDTH / 2 - lost_text.get_width() / 2, HEIGHT / 2))
+                lost_message = f"LMAOOOOOOO u are horrible at this game."
+                score_message = f"Final Score: {score}"
+                
+                lost_text = FONT.render(lost_message, 1, "white")
+                score_text = FONT.render(score_message, 1, "white")
+                
+                WIN.blit(lost_text, (WIDTH / 2 - lost_text.get_width() / 2, HEIGHT / 2 - 40))
+                WIN.blit(score_text, (WIDTH / 2 - score_text.get_width() / 2, HEIGHT / 2 + 10))
+                
                 pygame.display.update()
                 pygame.time.delay(4000)
                 run = False
