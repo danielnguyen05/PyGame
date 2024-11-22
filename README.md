@@ -5,5 +5,5 @@ Save all the required assets (images) in the img/ folder. Then run the game from
 Install Pygame and run the game:
 ```
 pip install pygame
-python main.py
+python menu.py
 ```
